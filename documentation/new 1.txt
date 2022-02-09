@@ -1,0 +1,14 @@
+truncate table tenantinvoices;
+truncate table balances;
+truncate table deposit;
+truncate table property;
+truncate table units;
+truncate table tenants;
+truncate table landlord;
+truncate table logo;
+truncate table agents;
+truncate table agencyfee;
+truncate table penaltyfee;
+truncate table agencybank;
+truncate table mpesa;
+truncate table estate
