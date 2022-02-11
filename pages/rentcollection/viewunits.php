@@ -62,7 +62,7 @@ echo"<td>
 <a href='#' class='btn btn-sm btn-outline-danger btn-sm' data-toggle='modal'  data-target='#removeestate".$unitid."'> <i class='fas fa-trash-alt'></i>  </a> 
 
 </td></tr>";
-include 'editunit.php';
+include 'editunits.php';
 include 'removeunit.php';
 $i++;
 }}
@@ -121,7 +121,7 @@ echo"<td>
 <a href='#' class='btn btn-sm btn-outline-light' data-toggle='modal'  data-target='#editunit".$unitid."'> Edit  </a> 
 
 </td></tr>";
-include 'editunit.php';
+include 'editunits.php';
 
 $i++;
 }}
@@ -176,7 +176,7 @@ echo"<td>
 <a href='#' class='btn btn-sm btn-outline-light' data-toggle='modal'  data-target='#editunit".$unitid."'> Edit  </a> 
 
 </td></tr>";
-include 'editunit.php';
+include 'editunits.php';
 $i++;
 }}
 		

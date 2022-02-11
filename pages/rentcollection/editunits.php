@@ -19,35 +19,39 @@
 	<input  type="text" class="form-control" name="abbriviation" value="<?php echo $abbriviation?>" hidden required>				 
   <div class="row">
     <div class="col">
-	<div class="form-group">
-                                                <label for="estatename" class="col-form-label">Estate Name</label>
-												<input  type="text" class="form-control" name="estatename" value="<?php echo $estatename ?>" pattern="^[a-zA-Z ]+" required>
+		<div class="form-group">
+                                                <label for="propertyname" class="col-form-label">Unit ID: </label>
+												<input class="form-control" type="text" name="unitid1"  value="<?php echo $unitid;?>" required>
                                                 
                                             </div>
 	
 	</div>
 	<div class="col">
 	<div class="form-group">
-                                                <label for="abbriviation" class="col-form-label">Abbriviation/ Estate Code</label>
-												<input  type="text" class="form-control" name="abbriviation" value="<?php echo $abbriviation ?>" pattern="^[0-9A-Za-z]+" DISABLED required>
-                                                
+                                                 <label for="price1" class="col-form-label">Price</label>
+												 <div class="input-group mb-3">
+												 <div class="input-group-prepend"><span class="input-group-text">Ksh</span></div>
+                                               <input type="number" class="form-control currency-inputmask" name="price1"  value="<?php echo $price;?>" required >
+                                                <div class="input-group-append"><span class="input-group-text">.00</span></div>
+                                            </div>
                                             </div>
 	
 	</div>
 	</div>
 	<div class="row">
     <div class="col">
-								<div class="form-group">
-								<label for="county" class="col-form-label">County </label>
-								<select name="county" type="text" class="form-control" required><option selected><?php echo $county ?></option><option>NAKURU</option><option>NAIROBI</option><option>BARINGO</option><option>ELDORET</option><option>KERICHO</option></select>
+    <div class="form-group">
+								<label for="unittype" class="col-form-label">Unit Type: </label>
+								 <select  name="unittype" class="form-control" required><option selected><?php echo $unittype;?></option><option >SINGLE</option><option>BED SITTER</option>
+								   <option>DOUBLE ROOM</option><option>ONE BED ROOM</option><option>TWO BED ROOM</option></select>
 								</div>
 								</div>
 								
 								
 									<div class="col">
-								<div class="form-group">
-								<label for="town" class="col-form-label">Town</label>
-								<input type="text" class="form-control" name="town" Value=" <?php echo $town ?>" maxlength="20" pattern="^[a-zA-Z ]+" required>
+                  <div class="form-group">
+								<label for="areasq1" class="col-form-label">Size (Feet<sup>2</sup>): </label>
+								<input class="form-control" type="number" name="areasq1" value="200" max="1000"min="100" required>
 								</div>
 								</div>
 								
@@ -62,7 +66,7 @@
   	<div class="modal-footer">
                                                                 
 																<input type="Close" class="btn btn-secondary" data-dismiss="modal" value="Close">
-																<input class="btn btn-primary" type="submit" name="submit-editestate" value="Save Estate">
+																<input class="btn btn-primary" type="submit" name="submit-editestate" value="Save Unit">
 																
  
    
