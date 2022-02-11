@@ -2,7 +2,7 @@
  
 <?php    
 
-$connect=mysqli_connect("localhost","exquisitecybe_admin","Admin254@2021","exquisitecybe_arenahomessystem");
+$connect=mysqli_connect("localhost","root","","miliki");
 
 // Check connection
 if (mysqli_connect_errno($connect))

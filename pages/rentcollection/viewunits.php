@@ -57,10 +57,13 @@ echo "<td>
 <a href ='booktenant1.php?act=add& propertyid=".$propertyid."&unitid=".$unitid."' class='btn btn-sm btn-outline-warning' >Book</a>
 
 </td>";
-echo"<td><a href='#' class='btn btn-sm btn-outline-info' data-toggle='modal'  data-target='#editestate".$propertyid."'> Edit  </a> 
-<a href='#' class='btn btn-sm btn-outline-danger btn-sm' data-toggle='modal'  data-target='#removeestate".$propertyid."'> <i class='fas fa-trash-alt'></i>  </a> 
+echo"<td>
+<a href='#' class='btn btn-sm btn-outline-light' data-toggle='modal'  data-target='#editunit".$unitid."'> Edit  </a> 
+<a href='#' class='btn btn-sm btn-outline-danger btn-sm' data-toggle='modal'  data-target='#removeestate".$unitid."'> <i class='fas fa-trash-alt'></i>  </a> 
 
 </td></tr>";
+include 'editunit.php';
+include 'removeunit.php';
 $i++;
 }}
 		echo "</tbody>"; 	
@@ -114,10 +117,12 @@ echo "<td>
 <a href ='booktenant1.php?act=add& propertyid=".$propertyid."&unitid=".$unitid."' class='btn btn-sm btn-outline-warning' >Cancel Book</a>
 
 </td>";
-echo"<td><a href='#' class='btn btn-sm btn-outline-info' data-toggle='modal'  data-target='#editestate".$propertyid."'> Edit  </a> 
-<a href='#' class='btn btn-sm btn-outline-danger btn-sm' data-toggle='modal'  data-target='#removeestate".$propertyid."'> <i class='fas fa-trash-alt'></i>  </a> 
+echo"<td>
+<a href='#' class='btn btn-sm btn-outline-light' data-toggle='modal'  data-target='#editunit".$unitid."'> Edit  </a> 
 
 </td></tr>";
+include 'editunit.php';
+
 $i++;
 }}
 echo "</tbody>"; 
@@ -167,10 +172,11 @@ echo "<td>".$row['price']."</td>";
 echo "<td>
 
 </td>";
-echo"<td><a href='#' class='btn btn-sm btn-outline-info' data-toggle='modal'  data-target='#editestate".$propertyid."'> Edit  </a> 
-<a href='#' class='btn btn-sm btn-outline-danger btn-sm' data-toggle='modal'  data-target='#removeestate".$propertyid."'> <i class='fas fa-trash-alt'></i>  </a> 
+echo"<td>
+<a href='#' class='btn btn-sm btn-outline-light' data-toggle='modal'  data-target='#editunit".$unitid."'> Edit  </a> 
 
 </td></tr>";
+include 'editunit.php';
 $i++;
 }}
 		
