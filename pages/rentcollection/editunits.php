@@ -5,7 +5,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
   <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Edit Estate</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">Edit Unit</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -14,7 +14,7 @@
                         <!-- inputmask -->
                         <!-- ============================================================== -->
                      <div class="container">
-					 <form name="payinvoice" method="post" action="editestate1.php">
+					 <form name="payinvoice" method="post" action="editunits1.php">
 	<input  type="text" class="form-control" name="unitid" value="<?php echo $unitid?>" hidden required>				 
 	<input  type="text" class="form-control" name="propertyid" value="<?php echo $propertyid?>" hidden required>				 
   <div class="row">
@@ -65,7 +65,7 @@
 									<div class="col">
                   <div class="form-group">
   <label for="features">Unit Features</label>
-  <textarea class="form-control rounded-0" id="Features" rows="10"> <?php echo $features;?></textarea>
+  <textarea class="form-control rounded-0" id="Features" name="features"rows="10"> <?php echo $features;?></textarea>
 </div>
 								</div>
 								
@@ -79,7 +79,7 @@
   	<div class="modal-footer">
                                                                 
 																<input type="Close" class="btn btn-secondary" data-dismiss="modal" value="Close">
-																<input class="btn btn-primary" type="submit" name="submit-editestate" value="Save Unit">
+																<input class="btn btn-primary" type="submit" name="submit-editunit" value="Save Unit">
 																
  
    
