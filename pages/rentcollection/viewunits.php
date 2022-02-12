@@ -42,16 +42,21 @@ $result=mysqli_query($connect,$select);
 
 
 while($row=mysqli_fetch_array($result)){
-$propertyid = $row['propertyid'];
-$unitid = $row['unitid'];
+    $propertyid = $row['propertyid'];
+    $unitid = $row['unitid'];
+    $price2 = $row['price'];
+    $unittype = $row['type'];
+    $status = $row['status'];
+    $areasq = $row['areasq'];
+    $features = $row['features'];
 echo "<tr>";
 echo "<td>".$i."</td>";
-echo "<td>".$row['unitid']."</td>";
-echo "<td>".$row['type']."</td>";
-echo "<td>".$row['status']."</td>";
-echo "<td>".$row['areasq']."</td>";
-echo "<td>".$row['features']."</td>";
-echo "<td>".$row['price']."</td>";
+echo "<td>".$unitid."</td>";
+echo "<td>".$unittype."</td>";
+echo "<td>".$status."</td>";
+echo "<td>".$areasq."</td>";
+echo "<td>".$features."</td>";
+echo "<td>".$price2."</td>";
 echo "<td>
 <a href ='addtenant1.php?act=add& propertyid=".$propertyid."&unitid=".$unitid."' class='btn btn-sm btn-outline-success' >Add Tenant</a>
 <a href ='booktenant1.php?act=add& propertyid=".$propertyid."&unitid=".$unitid."' class='btn btn-sm btn-outline-warning' >Book</a>

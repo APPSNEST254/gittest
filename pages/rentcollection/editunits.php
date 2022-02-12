@@ -15,13 +15,13 @@
                         <!-- ============================================================== -->
                      <div class="container">
 					 <form name="payinvoice" method="post" action="editestate1.php">
-	<input  type="text" class="form-control" name="agencyid1" value="<?php echo $agencyid?>" hidden required>				 
-	<input  type="text" class="form-control" name="abbriviation" value="<?php echo $abbriviation?>" hidden required>				 
+	<input  type="text" class="form-control" name="unitid" value="<?php echo $unitid?>" hidden required>				 
+	<input  type="text" class="form-control" name="propertyid" value="<?php echo $propertyid?>" hidden required>				 
   <div class="row">
     <div class="col">
 		<div class="form-group">
                                                 <label for="propertyname" class="col-form-label">Unit ID: </label>
-												<input class="form-control" type="text" name="unitid1"  value="<?php echo $unitid;?>" required>
+												<input class="form-control" type="text" name="unitid1"  value="<?php echo $unitid;?>" disabled>
                                                 
                                             </div>
 	
@@ -31,7 +31,7 @@
                                                  <label for="price1" class="col-form-label">Price</label>
 												 <div class="input-group mb-3">
 												 <div class="input-group-prepend"><span class="input-group-text">Ksh</span></div>
-                                               <input type="number" class="form-control currency-inputmask" name="price1"  value="<?php echo $price;?>" required >
+                                                <input class="form-control" type="text" name="price1"  value="<?php echo $price2;?>" required>
                                                 <div class="input-group-append"><span class="input-group-text">.00</span></div>
                                             </div>
                                             </div>
@@ -58,7 +58,20 @@
 	
   </div>
   
-
+	<div class="row">
+    
+								
+								
+									<div class="col">
+                  <div class="form-group">
+  <label for="features">Unit Features</label>
+  <textarea class="form-control rounded-0" id="Features" rows="10"> <?php echo $features;?></textarea>
+</div>
+								</div>
+								
+	
+  </div>
+  
   
   
   
