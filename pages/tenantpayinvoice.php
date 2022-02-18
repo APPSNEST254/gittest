@@ -16,6 +16,8 @@ $sanitationbill=$_POST["sanitationbill"];
 $damagesfee=$_POST["damagesfee"];
 $othercharges=$_POST["others"];
 $mode=$_POST["mode"];
+$acctname=$_POST["acctname"];
+$acctno=$_POST["acctno"];
 $trscode=$_POST["trscode"];
 $paid=$_POST["paid"];
 $status4='DUE';
@@ -27,10 +29,6 @@ $leo=Date("ymdh-i");
 $lo=Date("ym");
 $regdate=Date("y-m-d");
 $regdate1 = date("F j, Y, g:i a"); 
-
-
-
-
 
 
 $select4="SELECT rno FROM rno";
@@ -54,66 +52,12 @@ $unitid = $row['unitid'];
 $tenantid = $row['tenantid'];
 
 if ($paid>=1){
-
-	if($mode=='BANK'){		
-				
-		$select9b="SELECT * FROM agencybank WHERE agencyid='$agencyid' ";
-		$sel9b=mysqli_query($connect,$select9b);
-			$row=mysqli_fetch_array($sel9b);		
-						
-					
-					$mode2name=$row['bankname'];	
-					$mode2='BANK';	
-					$accountname2=$row['accountname'];	
-					$accountno2=$row['accountno'];
-	
-$update6b = "UPDATE tenantinvoices SET balancecf='$balancecf',paydate='$regdate',time='$regdate1',electricitybill='$electricitybill',waterbill='$waterbill',damagesfee='$damagesfee',othercharges='$othercharges',mode='$mode2',modename='$mode2name',acctname='$accountname2',acctno='$accountno2',trscode='$trscode',status='$status2',admin='$agentid',paid='$paid',rno='$rno' WHERE invoiceno='$invoiceno'";  
+$update6b = "UPDATE tenantinvoices SET balancecf='$balancecf',paydate='$regdate',time='$regdate1',electricitybill='$electricitybill',waterbill='$waterbill',damagesfee='$damagesfee',othercharges='$othercharges',mode='$mode',acctname='$acctname',acctno='$acctno',trscode='$trscode',status='$status2',admin='$agentid',paid='$paid',rno='$rno' WHERE invoiceno='$invoiceno'";  
 
 if(!mysqli_query($connect,$update6b)){
  echo "<script>alert('Failed to send payments')</script>";
- 
-}          
-	
-	}
-
-
-
-if($mode=='MPESA'){		
-				
-	$select9p="SELECT * FROM mpesa WHERE agencyid='$agencyid' ";
-	$sel9p=mysqli_query($connect,$select9p);
-		$row=mysqli_fetch_array($sel9p);		
-				$mode1name=$row['mpesamode'];	
-				$mode1='MPESA';	
-				$businessname1=$row['bisinessname'];	
-			
-$update6c = "UPDATE tenantinvoices SET balancecf='$balancecf',paydate='$regdate',time='$regdate1',electricitybill='$electricitybill',waterbill='$waterbill',damagesfee='$damagesfee',othercharges='$othercharges',mode='$mode1',modename='$mode1name',acctname='$businessname1',acctno='$invoiceno',trscode='$trscode',status='$status2',admin='$agentid',paid='$paid',rno='$rno' WHERE invoiceno='$invoiceno'";  
-
-				if(!mysqli_query($connect,$update6c)){
-				 echo "<script>alert('Failed to send payments')</script>";
-				 
-				} 				
-}
-
-
-
-if($mode=='CASH'){
-	$mode3name='N/A';	
-				$mode3='CASH';	
-				$account3no='N/A';	
-
-				$update6d = "UPDATE tenantinvoices SET balancecf='$balancecf',paydate='$regdate',time='$regdate1',electricitybill='$electricitybill',waterbill='$waterbill',damagesfee='$damagesfee',othercharges='$othercharges',mode='$mode3',trscode='$trscode',status='$status2',admin='$agentid',paid='$paid',rno='$rno' WHERE invoiceno='$invoiceno'";  
-
-				if(!mysqli_query($connect,$update6d)){
-				 echo "<script>alert('Failed to send payments')</script>";
-				 
-				} 		
 
 }
-
-
-
-
 }
 
 

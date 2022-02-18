@@ -1,8 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {font-family: Arial, Helvetica, sans-serif;}
+
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+
 <?php 
-              
+
+include('toWords.php');
+
+               
 				 if($_GET['act']=="view"){
 	include('../dbconnect.php');
-                require('../adminsession.php');
+   
+    require('../adminsession.php');          
 	$invoiceno =$_GET['invoiceno'];
 	
 	
@@ -24,24 +77,38 @@ $electricitybill = $row['electricitybill'];
 $sanitationbill = $row['sanitationbill'];
 $damagesfee = $row['damagesfee'];
 $othercharges = $row['othercharges'];
-$paid = $row['paid'];
 $mode = $row['mode'];
 $acctname = $row['acctname'];
 $acctno = $row['acctno'];
+$trscode = $row['trscode'];
 $admin = $row['admin'];
 $status = $row['status'];
 
 
+$month1=date_create(" 01-$month");
+$month2 = date_format($month1,"M-Y");
 
 
-$select9p1="SELECT * FROM deposit WHERE invoiceno='$invoiceno'" ;
+
+
+$select9p1="SELECT * FROM deposit WHERE invoiceno='$invoiceno' " ;
 $sel9p1=mysqli_query($connect,$select9p1);
 	$row=mysqli_fetch_array($sel9p1);		
-			;
-$deposit = $row['deposit'];
+
+    if(mysqli_num_rows($sel9p1)<>0){
+	
+        $deposit = $row['deposit'];
 $agencyfee = $row['agencyfee'];
 $waterdeposit = $row['waterdeposit'];
 $electricitydeposit = $row['electricitydeposit'];
+       
+   }
+
+   else
+$deposit = 0;
+$agencyfee = 0;
+$waterdeposit= 0;
+$electricitydeposit = 0;
 
 
 
@@ -62,7 +129,7 @@ $sel7p=mysqli_query($connect,$select7p);
 		//$vat=10/100*$subtotal;
 		$vat=0;
 		$total =$subtotal+$vat;
-		$balancecf =$paid-$total;
+		
 		
 	$select9="SELECT propertyname FROM property WHERE propertyid='$propertyid' ";
 $sel9=mysqli_query($connect,$select9);
@@ -107,6 +174,10 @@ $sel9a=mysqli_query($connect,$select9a);
 		
 				 ?>
 
+<!--###########################-->
+<!--start paid invoive-->
+<!--###########################-->
+
 <!doctype html>
 <html lang="en">
  
@@ -114,463 +185,307 @@ $sel9a=mysqli_query($connect,$select9a);
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="../../assets/vendor/bootstrap/css/bootstrap.min.css">
-    <link href="../../assets/vendor/fonts/circular-std/style.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../assets/libs/css/style.css">
-    <link rel="stylesheet" href="../../assets/vendor/fonts/fontawesome/css/fontawesome-all.css">
-    <title>invoice</title>
+ 
+    <title>Due invoice</title>
 </head>
 <body>
-<div class="container-fluid dashboard-content ">
+
+<style>
+th, td {
+    text-align: left;
+}
+body{
+	color:black;
+	font-family:Courier New;
+	font-size: px;
+}
+</style>
+
+
+<div id='printinvoice' style="margin:50px;width:968px;height:682px;background-color:white;">
+
+<div  style="margin:10px;width:958px;height:129px;">
+<!--###start header####-->
+ <div class="row">
+ <div  style="float:left;width:615px;height:129px;">
+ <img style="width:608px;height:100px;margin:auto;" src='../uploads/b2.png'>
+</div >
+ <div  style="float:right;width:343px;height:129px;text-align:Right;">
+ 
+<strong >Invoice No:</strong> <?php echo  $invoiceno; ?><br>
+<strong >Date Generated:</strong> <?php echo  $dategenerated; ?><br>
+<strong >Date Due</strong> <?php echo  $duedate; ?><br>
+
+<strong >Invoiced Amount:</strong> <?php echo  $total; ?>
+</div >
+</div >
+<!--###end header####-->
+<div class="row">
+<hr>
+</div >
+<!--###start address####-->
+
+ <div class="row" style="background-color:#EFEFF6;">
+ <div  style="float:left;width:479px;text-align:left;">
+From:
+<strong ><?php echo  $agencyfullname1; ?><br></strong >
+P.O Box <?php echo  $box1." ".$town1." ".$postalcode1; ?><br>
+<?php echo  $address1; ?><br>
+<?php echo  $address11; ?><br>
+Email: <?php echo  $email1; ?><br>
+Phone: <?php echo  $phoneno1; ?><br>
+</div >
+<div  style="float:right;width:479px;text-align:left;">
+ To:
+<strong ><?php echo  $tenantname; ?><br></strong >
+House name:   <?php echo  $propertyname ?> <br>
+House No:   <?php echo  $propertyid ?>  Unit No:   <?php echo  $unitid ?><br>
+Email: <?php echo  $email2 ;?><br>
+Phone: <?php echo  $mobileno2 ;?><br>
+
+</div >
+
+</div >
+
+<!--###end address####-->
+
+<!--###start payments####-->
+
+ <div class="row">
+ <div  >
+<table style="width:100%;">
+
+<thead>
+<tr>
+<td colspan="8"><hr></td>
+
+</tr>
+<tr>
+<th colspan="2">Item</th><th colspan="4">Description</th><th style="text-align:right;">Total(Ksh)</th><th></th>
+</tr></thead>
+<tbody>
+   
+  <?php 
+if ($deposit>=1){
+?>
+<tr>
+<td colspan="2"> Deposit</td>
+<td colspan="4"> Unit deposit:   </td>
+<td style="text-align:right;"><?php echo  $deposit;?> </td>
+<td ></td>
+</tr>
+<?php 
+}
+if ($rent>=1){
+?>
+<tr>
+<td colspan="2">Rent</td>
+<td colspan="4">Rent for:   <?php echo  $month2 ?>  (Month) </td>
+<td style="text-align:right;"><?php echo  $rent;?> </td>
+<td ></td>
+</tr>
+
+<?php 
+}
+if ($balancebf>=1){
+?>
+<tr>
+<td colspan="2">Balance B/F</td>
+<td colspan="4">Previouy blalances: </td>
+<td style="text-align:right;"><?php echo  $balancebf;?> </td>
+<td ></td>
+</tr>
+<?php 
+}
+if ($agencyfee>=1){
+?>
+<tr>
+<td colspan="2">Agency Fee</td>
+<td colspan="4">Tenancy agreement fee(Paid once): </td>
+<td style="text-align:right;"><?php echo  $agencyfee;?> </td>
+<td ></td>
+</tr>
+</tbody>
+ <?php 
+}
+if ($electricitydeposit>=1){
+?>
+<tr>
+<td colspan="2">Electricity deposit</td>
+<td colspan="4">Electricity deposit (Refundable):  </td>
+<td style="text-align:right;"><?php echo  $electricitydeposit;?> </td>
+<td ></td>
+</tr>
+ <?php 
+}
+if ($waterdeposit>=1){
+?>
+<tr>
+<td colspan="2">Water deposit</td>
+<td colspan="4">Water deposit (Refundable):  </td>
+<td style="text-align:right;"><?php echo  $waterdeposit;?> </td>
+<td ></td>
+</tr>
+<?php 
+}
+if ($waterbill>=1){
+?>
+<tr>
+<td colspan="2">Water Bill</td>
+<td colspan="4">Invoiced bill:</td>
+<td style="text-align:right;"><?php echo  $waterbill;?> </td>
+<td ></td>
+</tr>
+<?php 
+}
+if ($electricitybill>=1){
+?>
+<tr>
+<td colspan="2">Electricity Bill</td>
+<td colspan="4">Invoiced bill:</td>
+<td style="text-align:right;"><?php echo  $electricitybill;?> </td>
+<td ></td>
+</tr>
+<?php 
+}
+if ($sanitationbill>=1){
+?>
+<tr>
+<td colspan="2">Sanitation Bill</td>
+<td colspan="4">Invoiced bill</td>
+<td style="text-align:right;"><?php echo  $sanitationbill;?> </td>
+<td ></td>
+</tr>
+<?php 
+}
+if ($sanitationbill>=1){
+?>
+<tr>
+<td colspan="2">Sanitation Bill</td>
+<td colspan="4">Invoiced bill:</td>
+<td style="text-align:right;"><?php echo  $sanitationbill;?> </td>
+<td ></td>
+</tr>
+<?php 
+}
+if ($penaltyfee>=1){
+?>
+<tr>
+<td colspan="2">Penalty fee</td>
+<td colspan="4">late paymement of an invoice </td>
+<td style="text-align:right;"><?php echo  $penaltyfee;?> </td>
+<td ></td>
+</tr>
+<?php 
+}
+if ($damagesfee>=1){
+?>
+<tr>
+<td colspan="2">Damages fee</td>
+<td colspan="4">Invoiced amount:  </td>
+<td style="text-align:right;"><?php echo  $damagesfee;?> </td>
+<td ></td>
+</tr>
+<?php 
+}
+if ($othercharges>=1){
+?>
+<tr>
+<td colspan="2">Others </td>
+<td colspan="4">Invoiced amount: </td>
+<td style="text-align:right;"><?php echo  $othercharges;?> </td>
+<td ></td>
+</tr>
+<?php 
+}
+
+?>
+<tr>
+<td colspan="8"><hr></td>
+
+</tr>
+<tr>
+<td colspan="2"></td>
+<td>
+<strong >Subtotal:</strong> <br>
+<strong >VAT(16%):</strong><br> 
+<strong >Total:</strong> </td>
+<td style="text-align:right;">
+ KSH <?php echo  $subtotal ?><br>
+KSH <?php echo  $vat ?><br>
+ KSH <?php echo  $total ?>
+ </td>
+ 
+<td>
+ </td>
+
+
+</tr>
+<tr>
+<td colspan="8">
+Amount Due in Words: <?php // echo  "<b><u>".ucfirst(convert_number_to_words($total))." ONLY</u></b>"; ?>
+</td>
+
+</tr>
+<tr>
+<td colspan="8"><hr></td>
+
+</tr>
+<tr>
+<td >Payment Mode:</td><td style="text-align:right;"> <?php echo  $mode ?></td>
+<td >Account Name:</td><td style="text-align:right;"> <?php echo  $acctname; ?></td>
+<td > Account No:</td><td style="text-align:right;"> <?php echo  $acctno; ?> </td>
+<td >Transaction Code: </td><td style="text-align:right;"><?php echo  $trscode; ?></td>
+</tr>
+<tr>
+<td colspan="8"><hr></td>
+
+</tr>
+</tbody>
+ <tr>
+<td colspan="4">
+<br>
+Developer:<br>
+<strong > <color="blue">www.appsnest.net</color> (0790000450)<br></strong ></td>
+<td colspan="4">You were Served By:<br>
+<strong ><?php echo  $login_session ; ?></strong >
+---------------------------------------<br>
+<i>Receipt is invalid without stamp</i>
+</td>
+
+</tr>
+ </table>
+ </div >
+
+</div >
+
+<!--###########################-->
+<!--End paid invoive-->
+<!--###########################--> 
+
+
+
+
+</div >
+</div >
+
+
+<div  style="margin:50px;width:968px;">
+
  <div class="row">
 
-                        <div class="col-2">
-						</div>
-                        <div class="offset-xl-2 col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="card" id='printinvoice'>
-                                <div class="card-header p-4">
-                                     <a class="pt-2 d-inline-block"><img src="../<?php echo $logoname;?>" style="hight:40Px;width:40Px">  <?php echo $agencyfullname?> </a>
-                                   
-                                    <div class="float-right"> <h3 class="mb-0">Invoice# <?php echo  $invoiceno ;?></h3>
-                                    Date generated: <?php echo  $dategenerated ?> <br> Date Due:  <?php echo  $duedate ?></div>
-                                </div>
-                                <div class="card-body">
-                                    <div class="row mb-4">
-                                         <div class="col">
-	 
-	<h5 class="mb-3">From:</h5>                                            
-                                            <h4 class="text-dark mb-1"><?php echo  $agencyfullname1; ?></h4>                                            
-                                            <div><div>P.O Box <?php echo  $box1." ".$town1." ".$postalcode1; ?> </div></div>
-                                            <div><?php echo  $address1; ?></div>
-                                            <div><?php echo  $address11; ?></div>
-                                            <div>Email: <?php echo  $email1; ?></div>
-                                            <div>Phone: <?php echo  $phoneno1; ?></div>
-	</div>
-    <div class="col">
-	<h5 class="mb-3">To:</h5>
-                                            <div>Tenant</div>
-											<h4 class="text-dark mb-1"><?php echo  $tenantname ?></h4>                                            
-                                            <div>House name:   <?php echo  $propertyname ?>  </div>
-                                            <div> Unit No:   <?php echo  $unitid ?></div>
-                                            <div>Email: <?php echo  $email2 ;?></div>
-                                            <div>Phone: <?php echo  $mobileno2 ;?></div>
-
-	</div>
-
-	
-  </div>
-		
-                                    </div>
-                                    <div class="table-responsive-sm">
-                                        <table class="table table-striped">
-                                         <thead>
-                                                <tr>
-                                                   
-                                                    <th>Item</th>
-                                                    <th>Description</th>
-                                                    <th class="right">Unit Cost</th>
-                                                 
-                                                    <th class="center"></th>
-                                                    <th class="right">Item-Total</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-											<?php 
-											if ($rent>=1){
-											?>
-                                                <tr>
-                                                    
-                                                    <td class="left strong">Rent</td>
-                                                    <td class="left">Rent for <?php echo  $month;?></td>
-                                                    <td class="right"><?php echo  $rent ?></td>
-                                                    <td class="center"> </td>
-                                                    <td class="right"><?php echo  $rent ?></td>
-                                                </tr>
-												<?php 
-											}
-											if ($deposit>=1){
-											?>
-											
-												
-                                         <tr>
-                                                   
-                                                    <td class="left strong">Deposit</td>
-                                                    <td class="left">Deposit for <?php echo  $unitid;?></td>
-                                                    <td class="right"><?php echo  $deposit ?></td>
-                                                    <td class="center"> </td>
-                                                    <td class="right"><?php echo  $deposit ?></td>
-                                                </tr>
-												
-												
-														<?php 
-											}
-											if ($balancebf>=1){
-											?>
-											
-												
-                                         <tr>
-                                                   
-                                                    <td class="left strong">Balance B/F</td>
-                                                    <td class="left">Previouy blalances </td>
-                                                    <td class="right"><?php echo  $balancebf ?></td>
-                                                    <td class="center"> </td>
-                                                    <td class="right"><?php echo  $balancebf ?></td>
-                                                </tr>
-												
-												<?php 
-											}
-										if ($electricitydeposit>=1){
-											?>
-											
-														
-                                         <tr>
-                                                   
-                                                    <td class="left strong">Electricity deposit</td>
-                                                    <td class="left">Electricity Deposit for <?php echo  $unitid;?></td>
-                                                    <td class="right"><?php echo  $electricitydeposit ?></td>
-                                                    <td class="center"> </td>
-                                                    <td class="right"><?php echo  $electricitydeposit ?></td>
-                                                </tr>
-												
-												<?php 
-											}
-										if ($waterdeposit>=1){
-											?>
-											 <tr>
-                                                   
-                                                    <td class="left strong">Water deposit</td>
-                                                    <td class="left">Water Deposit for <?php echo  $unitid;?></td>
-                                                    <td class="right"><?php echo  $waterdeposit ?></td>
-                                                    <td class="center"> </td>
-                                                    <td class="right"><?php echo  $waterdeposit ?></td>
-                                                </tr>
-												
-												<?php 
-											}
-										if ($agencyfee>=1){
-											?>
-											 <tr>
-                                                   
-                                                    <td class="left strong">Agency Fee</td>
-                                                    <td class="left">Tenancy agreement fee(Paid once)</td>
-                                                    <td class="right"><?php echo  $agencyfee ?></td>
-                                                    <td class="center"> </td>
-                                                    <td class="right"><?php echo  $agencyfee ?></td>
-                                                </tr>
-												
-												<?php 
-											}
-										if ($penaltyfee>=1){
-											?>
-											
-											 <tr>
-                                                   
-                                                    <td class="left strong">Penalty Fee</td>
-                                                    <td class="left">late paymement of an invoice</td>
-                                                    <td class="right"><?php echo  $penaltyfee ?></td>
-                                                    <td class="center"> </td>
-                                                    <td class="right"><?php echo  $penaltyfee ?></td>
-                                                </tr>
-												
-												<?php 
-											}
-											if ($waterbill>=1){
-											?>
-											<tr>
-                                                   
-                                                    <td class="left strong">Water Bill</td>
-                                                    <td class="left">Invoiced bill</td>
-                                                    <td class="right"><?php echo  $waterbill ?></td>
-                                                    <td class="center"> </td>
-                                                    <td class="right"><?php echo  $waterbill ?></td>
-                                                </tr>
-												
-												<?php 
-											}
-										if ($electricitybill>=1){
-											?>
-											<tr>
-                                                   
-                                                    <td class="left strong">Electricity Bill</td>
-                                                    <td class="left">Invoiced bill</td>
-                                                    <td class="right"><?php echo  $electricitybill ?></td>
-                                                    <td class="center"> </td>
-                                                    <td class="right"><?php echo  $electricitybill ?></td>
-                                                </tr>
-												
-												<?php 
-											}
-										if ($sanitationbill>=1){
-											?>
-											
-												<tr>
-                                                   
-                                                    <td class="left strong">Sanitation Bill</td>
-                                                    <td class="left">Invoiced bill</td>
-                                                    <td class="right"><?php echo  $sanitationbill ?></td>
-                                                    <td class="center"> </td>
-                                                    <td class="right"><?php echo  $sanitationbill ?></td>
-                                                </tr>
-												
-												<?php 
-											}
-										if ($damagesfee>=1){
-											?>
-											
-												<tr>
-                                                   
-                                                    <td class="left strong">Damages fee</td>
-                                                    <td class="left">Invoiced Amount</td>
-                                                    <td class="right"><?php echo  $damagesfee ?></td>
-                                                    <td class="center"> </td>
-                                                    <td class="right"><?php echo  $damagesfee ?></td>
-                                                </tr>
-												
-												<?php 
-											}
-										if ($othercharges>=1){
-											?>
-                                               
-											   
-												<tr>
-                                                   
-                                                    <td class="left strong">Other Charges</td>
-                                                    <td class="left">Invoiced Amount</td>
-                                                    <td class="right"><?php echo  $othercharges ?></td>
-                                                    <td class="center"> </td>
-                                                    <td class="right"><?php echo  $othercharges ?></td>
-                                                </tr>
-												
-												<?php 
-											}
-										
-											?>
-											
-                                             <tr>
-                                                   
-                                                    <td class="left strong"> </td>
-                                                    <td class="left"> </td>
-                                                    <td class="left"> </td>
-                                                    <td class="left"> <strong class="text-dark">Subtotal</strong></td>
-                                                    <td class="right">KSH <?php echo  $subtotal ?></td>
-                                                </tr>
-												 <tr>
-                                                   
-                                                    <td class="left strong"> </td>
-                                                    <td class="left"> </td>
-                                                    <td class="left"> </td>
-                                                    <td class="left"> <strong class="text-dark">VAT (16%)</strong></td>
-                                                    <td class="right">KSH <?php echo  $vat ?></td>
-                                                </tr>
-												 <tr>
-                                                   
-                                                    <td class="left strong"> </td>
-                                                    <td class="left"> </td>
-                                                    <td class="left"> </td>
-                                                    <td class="left"> <strong class="text-dark">TotaL Amount Due</strong></td>
-                                                    <td class="right">KSH <?php echo  $total ?></td>
-                                                </tr>
-													
-												
-											 
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                   
-									<div class="card-footer bg-white">
-                                    <p class="mb-0">Payment Mode: <?php echo  $mode ?>, Account Name: <?php echo  $acctname; ?>  Account No: <?php echo  $acctno; ?> , Transaction Code: <?php echo  $admin; ?> </p>
-                                </div>
-									<div class="card-footer bg-white">
-                                    <p class="mb-0">Developer: <color="blue">www.appsnest.net</color> (0790000450)</p>
-                                </div>
-                                </div>
-                            
-                            </div>
-							  <div class="col-2">
-						</div>
-                        </div>
-                   
-			<div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal" >PAY</button>
-        <button type="button" class="btn btn-primary" onclick="printDiv('printinvoice')">Print Invoice</button>
+	<div style="Float:right;">
+        <button style="background-color:#f44336;font-size: 13px;padding:12px 28px;border-radius:4px;color:white" id="myBtn" >PAY INVOICE</button>
+        <button style="background-color:#008cba;font-size: 13px;padding:12px 28px;border-radius:4px;color:white;" type="button"  onclick="printDiv('printinvoice')">PRINT INVOICE</button>
       </div>
-<!--   ########## Start pay invoice Modal##########-->
- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog modal-lg" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLabel">Pay Invoice</h5>
-                                                                <a href="#" class="close" data-dismiss="modal" aria-label="Close">
-                                                                            <span aria-hidden="true">&times;</span>
-                                                                        </a>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                         <form name="generateinvoices" method="post" action="tenantpayinvoice.php" role="form" >
-  <div class="card-body border-top">
-                                    
-                                    
-									  <div class="row">
-									  <div class="col">
-                                        <div class="form-group">
-                                                <!-- <label for="invoiceno2" class="col-form-label">Invoice NO</label> -->
-												<input type="text" class="form-control"  name="invoiceno2" value="<?php echo $invoiceno; ?>"  required>
-                                            </div>
-                                            </div>
-											
-											
-										<div class="col">
-                                        <div class="form-group">
-                                                <!-- <label for="invoiced2" class="col-form-label">Invoiced Amount</label> -->
-												<input type="text" class="form-control"  name="invoiced2" value="<?php echo $total; ?>"  required>
-                                            </div>
-                                            </div>
-                                            </div>
-											
-											 
-      <div class="row">
-    <div class="col">
-	 
-	<div class="form-group">
-                                                 <label for="electricitybill" class="col-form-label">Electricity Bill</label>
-												 <div class="input-group mb-3">
-												 <div class="input-group-prepend"><span class="input-group-text">Ksh</span></div>
-                                               <input type="text" class="form-control currency-inputmask" name="electricitybill" value="0" >
-                                                <div class="input-group-append"><span class="input-group-text">.00</span></div>
-                                            </div>
-                                            </div>
-	</div>
-    <div class="col">
-<div class="form-group">
-                                                 <label for="waterbill" class="col-form-label">Water Bill</label>
-												 <div class="input-group mb-3">
-												 <div class="input-group-prepend"><span class="input-group-text">Ksh</span></div>
-                                               <input type="text" class="form-control currency-inputmask"  name="waterbill"value="0"  >
-                                                <div class="input-group-append"><span class="input-group-text">.00</span></div>
-                                            </div>
-                                            </div>
-	</div>
-	
-	 <div class="col">
-<div class="form-group">
-                                                 <label for="sanitationbill" class="col-form-label">Sanitation Bill</label>
-												 <div class="input-group mb-3">
-												 <div class="input-group-prepend"><span class="input-group-text">Ksh</span></div>
-                                               <input type="text" class="form-control currency-inputmask"  name="sanitationbill"value="0"  >
-                                                <div class="input-group-append"><span class="input-group-text">.00</span></div>
-                                            </div>
-                                            </div>
-	</div>
-	</div>
- <div class="row">
-	<div class="col">
-<div class="form-group">
-                                                 <label for="damagesfee" class="col-form-label">Damages Fee</label>
-												 <div class="input-group mb-3">
-												 <div class="input-group-prepend"><span class="input-group-text">Ksh</span></div>
-                                               <input type="text" class="form-control currency-inputmask" name="damagesfee" value="0" >
-                                                <div class="input-group-append"><span class="input-group-text">.00</span></div>
-                                            </div>
-                                            </div>
-	</div>
-	<div class="col">
-<div class="form-group">
-                                                 <label for="others" class="col-form-label">Others</label>
-												 <div class="input-group mb-3">
-												 <div class="input-group-prepend"><span class="input-group-text">Ksh</span></div>
-                                               <input type="text" class="form-control currency-inputmask" name="others" value="0" >
-                                                <div class="input-group-append"><span class="input-group-text">.00</span></div>
-                                            </div>
-                                            </div>
-	</div>
-	<div class="col">
-	</div>
-	
-  </div>
-  
-											
-									
-									
-									   <div class="row">
-    <div class="col">
-		<div class="form-group">
-                            <label>Payment Mode:</label>
-							<select name="mode" class="form-control" requiblack><option selected>CASH</option><option>KCB BANK</option><option>EQUITY BANK</option>
-							<option>MPESA /PAYBILL</option></select>
- </div>
-	
-	</div>
-    <div class="col">
-<div class="form-group">
-                             <label>A/C  Name:</label>
-							 <input class="form-control" type="text" name="acctname" value="" >
-                                
- </div>
-	</div>
-	<div class="col">
-	<div class="form-group">
-                             <label>A/C  No:</label>
-							 <input class="form-control" type="text" name="acctno" value="" >
-                                
- </div>
-	
-	</div>
-	</div>
-	
-   <div class="row">
-	
-	
-	 <div class="col">
-	 
-	<div class="form-group">
-                             <label>Transaction Code:</label>
-							 <input class="form-control" type="text" name="trscode" value="" >
-                                
- </div>
-	</div>
-	
-	  <div class="col">
-	<div class="form-group">
-                                                 <label for="paid" class="col-form-label">PAID</label>
-												 <div class="input-group mb-3">
-												 <div class="input-group-prepend"><span class="input-group-text">Ksh</span></div>
-                                               <input type="text" class="form-control currency-inputmask" id="paid" name="paid" value="<?php echo  $total ?>" required >
-                                                <div class="input-group-append"><span class="input-group-text">.00</span></div>
-                                            </div>
-                                            </div>
+      
+	  </div>
+      </div>
+	  
+	  
+    
+	  
 
-	</div>
-  </div>
-  
-  
-    </div>
-                                                            <div class="modal-footer">
-                                                                
-																<input type="Close" class="btn btn-secondary" data-dismiss="modal" value="Close">
-																<input class="btn btn-primary" type="submit" name="submit-payinvoice" value="Pay Invoice">
-																</form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-    </div>
-	<!--   ########## End pay invoice Modal##########-->
-    </div>
-        <!-- ============================================================== -->
-        <!-- end main wrapper  -->
-        <!-- ============================================================== -->
-        <!-- Optional JavaScript -->
-        <!-- jquery 3.3.1 -->
-        <script src="../../assets/vendor/jquery/jquery-3.3.1.min.js"></script>
-        <!-- bootstap bundle js -->
-        <script src="../../assets/vendor/bootstrap/js/bootstrap.bundle.js"></script>
-        <!-- slimscroll js -->
-        <script src="../../assets/vendor/slimscroll/jquery.slimscroll.js"></script>
-        <!-- main js -->
-        <script src="../../assets/libs/js/main-js.js"></script>
-		
-		
 		<script>
 		function printDiv(divName){
 			var printContents = document.getElementById(divName).innerHTML;
@@ -584,9 +499,63 @@ $sel9a=mysqli_query($connect,$select9a);
 
 		}
 	</script>
+
+
+
+
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <?Php include('payinvoice1.php'); ?>
+  </div>
+
+</div>
+
+<script>
+// Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+</script>
+<script>
+		function printDiv(divName){
+			var printContents = document.getElementById(divName).innerHTML;
+			var originalContents = document.body.innerHTML;
+
+			document.body.innerHTML = printContents;
+
+			window.print();
+
+			document.body.innerHTML = originalContents;
+
+		}</script>
 </body>
- 
 </html>
+
 <?php
 
 	} 

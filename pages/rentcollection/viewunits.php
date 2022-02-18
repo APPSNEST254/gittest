@@ -64,7 +64,7 @@ echo "<td>
 </td>";
 echo"<td>
 <a href='#' class='btn btn-sm btn-outline-light' data-toggle='modal'  data-target='#editunit".$unitid."'> Edit  </a> 
-<a href='#' class='btn btn-sm btn-outline-danger btn-sm' data-toggle='modal'  data-target='#removeestate".$unitid."'> <i class='fas fa-trash-alt'></i>  </a> 
+<a href='#' class='btn btn-sm btn-outline-danger btn-sm' data-toggle='modal'  data-target='#removeunit".$unitid."'> <i class='fas fa-trash-alt'></i>  </a> 
 
 </td></tr>";
 include 'editunits.php';

@@ -128,7 +128,7 @@ function convert_number_to_words($number) {
                
 				 if($_GET['act']=="view"){
 	include('../dbconnect.php');
-                require('../adminsession.php');
+    require('../adminsession.php');          
 	$invoiceno =$_GET['invoiceno'];
 	
 	
@@ -160,18 +160,38 @@ $rno = $row['rno'];
 $status = $row['status'];
 
 
+$month1=date_create(" 01-$month");
+$month2 = date_format($month1,"M-Y");
 
 
-$select9p1="SELECT * FROM deposit WHERE invoiceno='$invoiceno'" ;
+$selcount="SELECT COUNT(invoiceno) AS depinvoice FROM deposit
+WHERE invoiceno='$invoiceno'"; 
+
+$selcount1=mysqli_query($connect,$selcount);
+$row=mysqli_fetch_array($selcount1);
+$depinvoice=$row['depinvoice'];
+
+if($depinvoice==1){
+
+$select9p1="SELECT * FROM deposit WHERE invoiceno='$invoiceno' " ;
 $sel9p1=mysqli_query($connect,$select9p1);
 	$row=mysqli_fetch_array($sel9p1);		
-			;
-$deposit = $row['deposit'];
+
+  
+        $deposit = $row['deposit'];
 $agencyfee = $row['agencyfee'];
 $waterdeposit = $row['waterdeposit'];
 $electricitydeposit = $row['electricitydeposit'];
+       
+   }
 
+   else{
+$deposit = 0;
+$agencyfee = 0;
+$waterdeposit= 0;
+$electricitydeposit = 0;
 
+   }
 
 	$select7p="SELECT firstname,middlename,suname,email,mobileno FROM tenants WHERE idno='$tenantid' ";
 $sel7p=mysqli_query($connect,$select7p);
@@ -234,6 +254,10 @@ $sel9a=mysqli_query($connect,$select9a);
 			
 		
 				 ?>
+
+<!--###########################-->
+<!--start paid invoive-->
+<!--###########################-->
 
 <!doctype html>
 <html lang="en">
@@ -327,7 +351,7 @@ if ($deposit>=1){
 ?>
 <tr>
 <td colspan="2"> Deposit</td>
-<td colspan="4"> Deposit for House No:   <?php echo  $propertyid ?>  Unit No:   <?php echo  $unitid ?> </td>
+<td colspan="4"> Unit deposit:   </td>
 <td style="text-align:right;"><?php echo  $deposit;?> </td>
 <td ></td>
 </tr>
@@ -337,7 +361,7 @@ if ($rent>=1){
 ?>
 <tr>
 <td colspan="2">Rent</td>
-<td colspan="4">rent for  House No:   <?php echo  $propertyid ?>  Unit No:   <?php echo  $unitid ?></td>
+<td colspan="4">Rent for:   <?php echo  $month2 ?>  (Month) </td>
 <td style="text-align:right;"><?php echo  $rent;?> </td>
 <td ></td>
 </tr>
@@ -348,7 +372,7 @@ if ($balancebf>=1){
 ?>
 <tr>
 <td colspan="2">Balance B/F</td>
-<td colspan="4">Previouy blalances </td>
+<td colspan="4">Previouy blalances: </td>
 <td style="text-align:right;"><?php echo  $balancebf;?> </td>
 <td ></td>
 </tr>
@@ -358,7 +382,7 @@ if ($agencyfee>=1){
 ?>
 <tr>
 <td colspan="2">Agency Fee</td>
-<td colspan="4">Tenancy agreement fee(Paid once) </td>
+<td colspan="4">Tenancy agreement fee(Paid once): </td>
 <td style="text-align:right;"><?php echo  $agencyfee;?> </td>
 <td ></td>
 </tr>
@@ -369,7 +393,7 @@ if ($electricitydeposit>=1){
 ?>
 <tr>
 <td colspan="2">Electricity deposit</td>
-<td colspan="4">For House No:   <?php echo  $propertyid ?>  Unit No:   <?php echo  $unitid ?> </td>
+<td colspan="4">Electricity deposit (Refundable):  </td>
 <td style="text-align:right;"><?php echo  $electricitydeposit;?> </td>
 <td ></td>
 </tr>
@@ -379,7 +403,7 @@ if ($waterdeposit>=1){
 ?>
 <tr>
 <td colspan="2">Water deposit</td>
-<td colspan="4">For House No:   <?php echo  $propertyid ?>  Unit No:   <?php echo  $unitid ?> </td>
+<td colspan="4">Water deposit (Refundable):  </td>
 <td style="text-align:right;"><?php echo  $waterdeposit;?> </td>
 <td ></td>
 </tr>
@@ -389,7 +413,7 @@ if ($waterbill>=1){
 ?>
 <tr>
 <td colspan="2">Water Bill</td>
-<td colspan="4">Invoiced bill</td>
+<td colspan="4">Invoiced bill:</td>
 <td style="text-align:right;"><?php echo  $waterbill;?> </td>
 <td ></td>
 </tr>
@@ -399,7 +423,7 @@ if ($electricitybill>=1){
 ?>
 <tr>
 <td colspan="2">Electricity Bill</td>
-<td colspan="4">Invoiced bill</td>
+<td colspan="4">Invoiced bill:</td>
 <td style="text-align:right;"><?php echo  $electricitybill;?> </td>
 <td ></td>
 </tr>
@@ -419,7 +443,7 @@ if ($sanitationbill>=1){
 ?>
 <tr>
 <td colspan="2">Sanitation Bill</td>
-<td colspan="4">Invoiced bill</td>
+<td colspan="4">Invoiced bill:</td>
 <td style="text-align:right;"><?php echo  $sanitationbill;?> </td>
 <td ></td>
 </tr>
@@ -439,7 +463,7 @@ if ($damagesfee>=1){
 ?>
 <tr>
 <td colspan="2">Damages fee</td>
-<td colspan="4">Invoiced amount </td>
+<td colspan="4">Invoiced amount:  </td>
 <td style="text-align:right;"><?php echo  $damagesfee;?> </td>
 <td ></td>
 </tr>
@@ -449,7 +473,7 @@ if ($othercharges>=1){
 ?>
 <tr>
 <td colspan="2">Others </td>
-<td colspan="4">Invoiced amount</td>
+<td colspan="4">Invoiced amount: </td>
 <td style="text-align:right;"><?php echo  $othercharges;?> </td>
 <td ></td>
 </tr>
@@ -525,8 +549,10 @@ Developer:<br>
  </div >
 
 </div >
- <!--###end payments####-->
- 
+
+<!--###########################-->
+<!--End paid invoive-->
+<!--###########################--> 
 
 </div >
 </div >
@@ -538,6 +564,7 @@ Developer:<br>
 	<div style="Float:right;">
         <button style="background-color:#f44336;font-size: 13px;padding:12px 28px;border-radius:4px;color:white;opacity:0.6;cursor:not-allowed;" type="button"  data-dismiss="modal"disabled >PAY INVOICE</button>
         <button style="background-color:#008cba;font-size: 13px;padding:12px 28px;border-radius:4px;color:white;" type="button"  onclick="printDiv('printinvoice')">PRINT INVOICE</button>
+    
       </div>
       
 	  </div>
